@@ -25,6 +25,25 @@ export default {
           const user = await newUser.save();
 
         return user
-    }
+    },
+    async updateUser(
+      _,
+      {
+        userInput: {
+          userId,
+          email,
+          firstName,
+          lastName,
+        },
+      },
+      context
+    ) {
+      const userObj = { email, firstName, lastName };     
+
+      const result = await User.findOneAndUpdate({ _id: userId }, userObj, {
+        new: true,
+      });
+      return result;
+    },
   },
 };

@@ -14,6 +14,7 @@ const typeDefs = gql`
     register(registerInput: RegisterInput): Admin!
     login(username: String!, password: String!): Admin!
     addUser(userInput: UserInput): User!
+    updateUser(userInput: UserInput): User!
   }
 `;
 
