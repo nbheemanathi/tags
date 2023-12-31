@@ -8,6 +8,7 @@ export const user = gql`
     lastName: String!
   }
   input UserInput {
+    userId:ID
     firstName: String!
     lastName: String!
     email: String!

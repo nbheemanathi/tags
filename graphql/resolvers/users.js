@@ -45,5 +45,13 @@ export default {
       });
       return result;
     },
+    async deleteUser(_, { userId }, context) {
+      const deleteResponse = await User.findOneAndRemove(
+        {
+          _id: userId,
+        },
+      );
+      return deleteResponse;
+    },
   },
 };

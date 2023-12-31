@@ -15,6 +15,7 @@ const typeDefs = gql`
     login(username: String!, password: String!): Admin!
     addUser(userInput: UserInput): User!
     updateUser(userInput: UserInput): User!
+    deleteUser(userId: String): User!
   }
 `;
 
