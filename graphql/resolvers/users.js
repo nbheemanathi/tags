@@ -15,12 +15,13 @@ export default {
     },
   },
   Mutation: {
-    async addUser(_, { userInput: { firstName, lastName, email } }, context) {
+    async addUser(_, { userInput: { firstName, lastName, email, phone } }, context) {
         const admin = checkAuth(context);
         const newUser = new User({
           firstName,
           lastName,
           email,
+          phone
           });
           const user = await newUser.save();
 
@@ -34,11 +35,12 @@ export default {
           email,
           firstName,
           lastName,
+          phone
         },
       },
       context
     ) {
-      const userObj = { email, firstName, lastName };     
+      const userObj = { email, firstName, lastName, phone };     
 
       const result = await User.findOneAndUpdate({ _id: userId }, userObj, {
         new: true,

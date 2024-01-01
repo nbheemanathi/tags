@@ -6,11 +6,13 @@ export const user = gql`
     email: String!
     firstName: String!
     lastName: String!
+    phone: Float
   }
   input UserInput {
     userId:ID
     firstName: String!
     lastName: String!
     email: String!
+    phone: Float
   }
 `;
