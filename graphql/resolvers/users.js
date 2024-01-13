@@ -1,13 +1,34 @@
 import User from "../../models/User.js";
 import checkAuth from "../../util/check-auth.js";
 
-
 export default {
-  Query: {    
-    async getUsers(_,{},context) {
-      const admin = checkAuth(context);      
+  Query: {
+    async getUsers(_, {}, context) {
+      const admin = checkAuth(context);
       try {
         const users = await User.find({}).sort({ createdAt: -1 });
+        return users;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async searchUser(_, { firstName, lastName, email }, context) {
+      const admin = checkAuth(context);
+      try {
+        const filters = {};
+
+        if (firstName) {
+          filters.firstName = { $regex: firstName, $options: "i" };
+        }
+
+        if (lastName) {
+          filters.lastName = { $regex: lastName, $options: "i" };
+        }
+
+        if (email) {
+          filters.email = { $regex: email, $options: "i" };
+        }
+        const users = await User.find(filters).sort({ createdAt: -1 });
         return users;
       } catch (error) {
         throw new Error(error);
@@ -16,31 +37,19 @@ export default {
   },
   Mutation: {
     async addUser(_, { userInput: { firstName, lastName, email, phone } }, context) {
-        const admin = checkAuth(context);
-        const newUser = new User({
-          firstName,
-          lastName,
-          email,
-          phone
-          });
-          const user = await newUser.save();
+      const admin = checkAuth(context);
+      const newUser = new User({
+        firstName,
+        lastName,
+        email,
+        phone,
+      });
+      const user = await newUser.save();
 
-        return user
+      return user;
     },
-    async updateUser(
-      _,
-      {
-        userInput: {
-          userId,
-          email,
-          firstName,
-          lastName,
-          phone
-        },
-      },
-      context
-    ) {
-      const userObj = { email, firstName, lastName, phone };     
+    async updateUser(_, { userInput: { userId, email, firstName, lastName, phone } }, context) {
+      const userObj = { email, firstName, lastName, phone };
 
       const result = await User.findOneAndUpdate({ _id: userId }, userObj, {
         new: true,
@@ -48,11 +57,9 @@ export default {
       return result;
     },
     async deleteUser(_, { userId }, context) {
-      const deleteResponse = await User.findOneAndRemove(
-        {
-          _id: userId,
-        },
-      );
+      const deleteResponse = await User.findOneAndRemove({
+        _id: userId,
+      });
       return deleteResponse;
     },
   },
