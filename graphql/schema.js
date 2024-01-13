@@ -9,7 +9,6 @@ const typeDefs = gql`
   type Query {
     getAdmin(username: String!): Admin
     getUsers: [User]
-    searchUser(firstName: String, lastName: String, email: String): [User]
   }
   type Mutation {
     register(registerInput: RegisterInput): Admin!
@@ -17,6 +16,8 @@ const typeDefs = gql`
     addUser(userInput: UserInput): User!
     updateUser(userInput: UserInput): User!
     deleteUser(userId: String): User!
+    searchUser(firstName: String, lastName: String, email: String): [User]
+
   }
 `;
 

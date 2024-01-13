@@ -12,28 +12,7 @@ export default {
         throw new Error(error);
       }
     },
-    async searchUser(_, { firstName, lastName, email }, context) {
-      const admin = checkAuth(context);
-      try {
-        const filters = {};
-
-        if (firstName) {
-          filters.firstName = { $regex: firstName, $options: "i" };
-        }
-
-        if (lastName) {
-          filters.lastName = { $regex: lastName, $options: "i" };
-        }
-
-        if (email) {
-          filters.email = { $regex: email, $options: "i" };
-        }
-        const users = await User.find(filters).sort({ createdAt: -1 });
-        return users;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+   
   },
   Mutation: {
     async addUser(_, { userInput: { firstName, lastName, email, phone } }, context) {
@@ -61,6 +40,28 @@ export default {
         _id: userId,
       });
       return deleteResponse;
+    },
+    async searchUser(_, { firstName, lastName, email }, context) {
+      const admin = checkAuth(context);
+      try {
+        const filters = {};
+
+        if (firstName) {
+          filters.firstName = { $regex: firstName, $options: "i" };
+        }
+
+        if (lastName) {
+          filters.lastName = { $regex: lastName, $options: "i" };
+        }
+
+        if (email) {
+          filters.email = { $regex: email, $options: "i" };
+        }
+        const users = await User.find(filters).sort({ createdAt: -1 });
+        return users;
+      } catch (error) {
+        throw new Error(error);
+      }
     },
   },
 };
